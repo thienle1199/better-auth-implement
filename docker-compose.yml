@@ -9,6 +9,8 @@ services:
       - db
     networks:
       - my_network
+    restart: always
+
 
   db:
     image: postgres:latest
@@ -22,6 +24,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - my_network
+    restart: always
 
 volumes:
   postgres_data:
