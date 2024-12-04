@@ -35,6 +35,7 @@ export default function SignUpPage() {
         email, 
         password, 
         name, 
+        callbackURL: '/signin'
      }, { 
         onRequest: () => { 
          //show loading

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import Link from "next/link";
  
 export default function SignInForm() {
   const [email, setEmail] = useState('')
@@ -64,6 +65,12 @@ export default function SignInForm() {
                 required
               />
             </div>
+
+            <div className="text-sm text-right">
+                <Link href="/reset-password" className="text-blue-600 hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
             {error && (
               <Alert variant="destructive">
                 <AlertDescription>{error}</AlertDescription>
