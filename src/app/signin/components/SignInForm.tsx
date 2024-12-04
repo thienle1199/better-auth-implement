@@ -1,38 +1,82 @@
 "use client"
 import { authClient } from "@/lib/auth-client"; //import the auth client
-import { redirect } from "next/navigation";
-import { useState } from 'react';
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
  
 export default function SignInForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');  
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
  
-  const signIn = async () => {
-    const { data, error } = await authClient.signIn.email({ 
+  const signIn = async (evt: FormEvent) => {
+    evt.preventDefault();
+    await authClient.signIn.email({ 
         email, 
         password,
      }, { 
-        onRequest: (ctx) => { 
-         //show loading
+        onRequest: () => { 
+         setIsLoading(true);
         }, 
-        onSuccess: (ctx) => { 
-          redirect("/")
+        onSuccess: () => { 
+          router.push("/");
         }, 
         onError: (ctx) => { 
-          alert(ctx.error.message); 
+          setError(ctx.error.message)
+          setIsLoading(false);
         }, 
       }); 
   };
  
   return (
-    <div className="flex flex-col gap-2 mx-auto w-[200px]">
-      
-      <label htmlFor="email">Email</label>
-      <input className="text-gray-700 p-2" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <label htmlFor="password">Password</label>
-      <input className="text-gray-700 p-2" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      {/* <input type="file" onChange={(e) => setImage(e.target.files?.[0])} /> */}
-      <button onClick={signIn}>Sign In</button>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold">Login</CardTitle>
+          <CardDescription>Enter your credentials to access your account</CardDescription>
+        </CardHeader>
+        <form onSubmit={signIn}>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="name@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            {error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+          </CardContent>
+          <CardFooter>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? 'Logging in...' : 'Log in'}
+            </Button>
+          </CardFooter>
+        </form>
+      </Card>
     </div>
-  );
+  )
 }

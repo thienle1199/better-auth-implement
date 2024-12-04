@@ -9,6 +9,7 @@ export default async function SignUp() {
   const session = await auth.api.getSession({
     headers: await headers()
   });
+  
   if (session?.session) {
     redirect("/")
   }
