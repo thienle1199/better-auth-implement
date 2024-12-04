@@ -9,8 +9,8 @@ export const auth = betterAuth({
         provider: "pg",
         schema: schema,
     }),
-    trustedOrigins: ["http://localhost:3000/signup", "http://localhost:3000/signin", "http://localhost:3000"],
-
+    trustedOrigins: [`${process.env.BETTER_AUTH_URL}/signup`, `${process.env.BETTER_AUTH_URL}/signin`, `${process.env.BETTER_AUTH_URL}`],
+    
     emailAndPassword: {
       enabled: true,
       autoSignIn: false,
