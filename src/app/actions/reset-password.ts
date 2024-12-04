@@ -7,7 +7,7 @@ const schema = z.object({
   email: z.string().email('Invalid email address'),
 })
 
-export async function resetPassword(prevState: any, formData: FormData) {
+export async function resetPassword(_prevState: unknown, formData: FormData) {
   const validatedFields = schema.safeParse({
     email: formData.get('email'),
   })
@@ -26,7 +26,7 @@ export async function resetPassword(prevState: any, formData: FormData) {
       }
     })
   
-  } catch (error) {
+  } catch {
     return { error: "Something went wrong" }
   }
 

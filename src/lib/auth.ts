@@ -9,12 +9,13 @@ export const auth = betterAuth({
         provider: "pg",
         schema: schema,
     }),
+    trustedOrigins: ["http://localhost:3000/signup", "http://localhost:3000/signin", "http://localhost:3000"],
 
     emailAndPassword: {
       enabled: true,
       autoSignIn: false,
       requireEmailVerification: true,
-      sendResetPassword: async ({user, url}: any) => {
+      sendResetPassword: async ({user, url}) => {
         await sendEmail({
           sendTo: user.email,
           subject: "Reset your password",

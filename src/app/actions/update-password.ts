@@ -15,7 +15,7 @@ const schema = z
 		path: ["confirmNewPassword"],
 	});
 
-export async function updatePassword(_prevState: any, formData: FormData) {
+export async function updatePassword(_prevState: unknown, formData: FormData) {
 	const validatedFields = schema.safeParse({
 		newPassword: formData.get("newPassword"),
 		confirmNewPassword: formData.get("confirmNewPassword"),
